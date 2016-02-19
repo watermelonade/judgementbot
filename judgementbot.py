@@ -51,12 +51,7 @@ def worst_ten(pq):
 
 pq = PriorityQueue()
 
-def get_todays(subreddits):
-    for post in subreddits.get_new(limit = None):
-        if post.created_utc < YESTERDAY:
-            yield post
-        else:
-            break
+
 
 running = True
 lasttime = datetime.datetime
@@ -64,7 +59,6 @@ while running:
 
     i = 0
     c_time = time.strftime("%H:%M")
-    print(c_time + "==" + DAILY_RUN_TIME + ": " + str(c_time == DAILY_RUN_TIME))
 
     if c_time == DAILY_RUN_TIME:
         TODAY = time.time()
@@ -78,11 +72,10 @@ while running:
         print("scrounging reddit...")
         all_comments = r.get_comments(SUBREDDIT, time='day', limit = None)
         for comment in all_comments:
-            #print(comment.created)
+
             if comment.id in cache or comment.created_utc < YESTERDAY:
-                #cache[i] = comment
-                #print("comment ignored")
                 continue
+
             elif comment.score < 0:
                 i+=1
                 cache.append(comment.id)
@@ -95,8 +88,4 @@ while running:
 		
         
         r.clear_authentication()
-
-    
-
-        
 
